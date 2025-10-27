@@ -5,6 +5,7 @@ import torch
 import timm
 import logging
 import sys
+import argparse
 from pathlib import Path
 
 # Add src to path
@@ -16,36 +17,42 @@ from src.utils.training import get_accuracy
 from src.models.mobilenet_v2 import MobileNetV2
 from src.distillation import train_student
 
-# --- Configuration ---
-LOG_FILE = "run_06_knowledge_distillation.log"
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-EPOCHS = 10  # Increased from 1 for a more meaningful run
-LR = 1e-3
-BATCH_SIZE = 128
-TEMPERATURE = 3.0
-ALPHA = 0.5  # Balance between KD loss and CE loss
-# --- End Configuration ---
+def parse_args():
+    parser = argparse.ArgumentParser(description="Script 6: Knowledge Distillation (ResNet-18 to MobileNetV2)")
+    parser.add_argument('--log_file', type=str, default="run_06_knowledge_distillation.log", help="Log file name")
+    parser.add_argument('--epochs', type=int, default=10, help="Number of training epochs")
+    parser.add_argument('--lr', type=float, default=1e-3, help="Learning rate")
+    parser.add_argument('--batch_size', type=int, default=128, help="Batch size for training and validation")
+    parser.add_argument('--temperature', type=float, default=3.0, help="Temperature for distillation")
+    parser.add_argument('--alpha', type=float, default=0.5, help="Weight for distillation loss (0.0 to 1.0)")
+    parser.add_argument('--student_wm', type=float, default=1.0, help="Width multiplier for the student MobileNetV2")
+    return parser.parse_args()
 
 def main():
-    logger = setup_logging(LOG_FILE)
+    args = parse_args()
+    DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    logger = setup_logging(args.log_file)
     logger.info("--- Starting Run 06: Knowledge Distillation ---")
+    logger.info(f"Using arguments: {args}")
+    logger.info(f"Using device: {DEVICE}")
 
     try:
         # 1. Load Data
-        train_loader, val_loader = get_cifar10_loaders(batch_size=BATCH_SIZE)
+        train_loader, val_loader = get_cifar10_loaders(batch_size=args.batch_size)
 
         # 2. Initialize Teacher Model
         logger.info("Loading pre-trained ResNet-18 (teacher) model...")
         teacher_model = timm.create_model('resnet18', pretrained=True, num_classes=10)
         teacher_model = teacher_model.to(DEVICE)
         
-        # Evaluate teacher (as in notebook)
         logger.info("Evaluating teacher model on CIFAR-10 (expect low accuracy as it's ImageNet pre-trained)...")
         get_accuracy(teacher_model, val_loader, DEVICE)
 
         # 3. Initialize Student Model
-        student_model = MobileNetV2(n_class=10).to(DEVICE)
-        logger.info(f"Student model MobileNetV2 initialized. Parameters: {sum(p.numel() for p in student_model.parameters())}")
+        student_model = MobileNetV2(n_class=10, width_multiplier=args.student_wm).to(DEVICE)
+        logger.info(f"Student model MobileNetV2 (WM={args.student_wm}) initialized. "
+                    f"Parameters: {sum(p.numel() for p in student_model.parameters())}")
 
         # 4. Train Student with Distillation
         train_student(
@@ -53,10 +60,10 @@ def main():
             student=student_model,
             train_loader=train_loader,
             device=DEVICE,
-            epochs=EPOCHS,
-            lr=LR,
-            T=TEMPERATURE,
-            alpha=ALPHA
+            epochs=args.epochs,
+            lr=args.lr,
+            T=args.temperature,
+            alpha=args.alpha
         )
 
         # 5. Evaluate Student
