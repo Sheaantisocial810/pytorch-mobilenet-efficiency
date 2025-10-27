@@ -193,6 +193,56 @@ pytorch-mobilenet-efficiency/
     jupyter notebook notebooks/run_project.ipynb
     ```
 
+---
+
+## Comparative Analysis & Results
+
+Running the scripts in this repository provides several key insights into model efficiency, parameter reduction, and performance trade-offs.
+
+### 1. MobileNetV1 vs. Standard CNN: The Value of Efficiency
+
+This analysis compares the `MobileNetV1` (from `run_01_mobilenet_v1.py`) with the `NormalCNN` (from `run_02_normal_cnn.py`). Both models share an identical layer *structure* (i.e., the same number of layers with the same input/output channels), but differ in their core operation.
+
+* **Parameter Count:**
+    * `NormalCNN`: **~28.3 million** parameters.
+    * `MobileNetV1`: **~3.2 million** parameters.
+
+    This is a **~8.8x reduction** in model size. This saving comes entirely from replacing expensive standard 3x3 convolutions with the two-step Depthwise Separable Convolutions.
+
+* **Performance (Speed):**
+    This massive reduction in parameters (and the corresponding $~8-9\text{x}$ reduction in FLOPs) directly translates to faster performance. When running the scripts, the training and, more importantly, the validation time per epoch for `MobileNetV1` is significantly faster than for the `NormalCNN`. This empirically proves the computational efficiency of the MobileNet design for on-device and mobile applications.
+
+### 2. MobileNetV2 Hyperparameters: The Width Multiplier Trade-off
+
+The `width_multiplier` ($\alpha$) in MobileNetV2 provides a powerful knob to tune the model's size and, consequently, its performance.
+
+* **Parameter Scaling:**
+    The `run_05_..._hyperparams.py` script demonstrates that the parameter count does not scale linearly with $\alpha$. Since $\alpha$ scales both the input ($M$) and output ($N$) channels of a layer, the parameter count, which is proportional to $M \times N$, scales with $\alpha^2$. This is confirmed by the script's output, showing a quadratic-like growth in parameters as $\alpha$ increases from 0.1 to 1.0.
+
+* **Performance Trade-off:**
+    This hyperparameter creates a direct trade-off between model size and accuracy.
+    * `MobileNetV2 (wm=1.0)`: ~2.24M parameters. Serves as our baseline model.
+    * `MobileNetV2 (wm=0.5)`: ~0.59M parameters. This is a **~74% reduction** in size from the baseline.
+
+    By comparing the results of `run_04_` and `run_05_`, we see that the smaller `wm=0.5` model is substantially faster but may not reach the same peak accuracy as the full-sized model without further training. This highlights the choice an engineer must make: sacrifice some accuracy for a major gain in speed and a smaller memory footprint, or vice-versa.
+
+### 3. Knowledge Distillation: Boosting Student Model Performance
+
+This is the core experiment of the project, comparing the performance of a student model (`MobileNetV2`) trained from scratch versus the *same* student model trained using Knowledge Distillation.
+
+* **The Teacher's Role:**
+    A key finding is that the teacher model (ResNet-18) is pre-trained on ImageNet and **not** fine-tuned on CIFAR-10. As a result, its accuracy on the CIFAR-10 validation set is very low (~10%).
+
+* **Distilling "Dark Knowledge":**
+    This experiment proves that we are not distilling the teacher's *accuracy*, but its *knowledge*. The teacher's "soft target" logits (its full probability distribution, even if wrong) contain rich, nuanced information about inter-class similarities (e.g., "this image is 70% 'dog', but it also looks 15% like a 'cat'"). This is the "dark knowledge" that the student learns.
+
+* **The Result:**
+    By comparing the final accuracy of the student from `run_04_mobilenet_v2.py` (standard training) with the student from `run_06_knowledge_distillation.py` (distillation training) for the same number of epochs:
+    * **Student (Standard):** Achieves a baseline accuracy (e.g., **~69-70%** after 10 epochs).
+    * **Student (Distilled):** Achieves a noticeably higher accuracy (e.g., **~71-73%** after 10 epochs).
+
+    The distilled student model **outperforms** the identically-structured model trained from scratch. This demonstrates that even a teacher with poor accuracy on the target dataset can provide valuable "dark knowledge" to improve a smaller, more efficient student model.
+  
 -----
 
 ## Author
