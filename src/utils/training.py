@@ -12,6 +12,7 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+
 def fit_epoch(model, data_loader, criterion, optimizer, device, train_mode=False):
     """
     Processes one epoch of training or validation.
